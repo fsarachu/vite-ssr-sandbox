@@ -5,7 +5,7 @@ import './App.css'
 // Works also with SSR as expected
 const Card = lazy(() => import('./Card'))
 
-function App() {
+function App({pageData = {}}: {pageData?: Record<string, any>}) {
   return (
     <>
       <div>
@@ -17,6 +17,7 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
+        <p>{pageData?.title}</p>
 
       <Suspense fallback={<p>Loading card component...</p>}>
         <Card />

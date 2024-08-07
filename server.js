@@ -55,6 +55,8 @@ app.use('*', async (req, res) => {
 
     let didError = false
 
+    const pageData = { title: 'Data from SSR' }
+
     const { pipe, abort } = render(url, ssrManifest, {
       onShellError() {
         res.status(500)
@@ -72,6 +74,8 @@ app.use('*', async (req, res) => {
           }
         })
 
+        template = template.replace('<!--page-data-->', JSON.stringify(pageData))
+
         const [htmlStart, htmlEnd] = template.split(`<!--app-html-->`)
 
         res.write(htmlStart)
@@ -86,7 +90,7 @@ app.use('*', async (req, res) => {
         didError = true
         console.error(error)
       }
-    })
+    }, pageData)
 
     setTimeout(() => {
       abort()
